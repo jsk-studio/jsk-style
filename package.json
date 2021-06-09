@@ -1,0 +1,18 @@
+{
+  "name": "scss-kits",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "vite demo",
+    "build": "vite build demo"
+  },
+  "dependencies": {
+    "vue": "^3.0.4",
+    "vue-router": "^4.0.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.2.3",
+    "@vue/compiler-sfc": "^3.1.1",
+    "sass": "^1.34.1",
+    "vite": "^1.0.0-rc.13"
+  }
+}

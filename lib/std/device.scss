@@ -1,0 +1,24 @@
+$screen-map: (
+    pc-wide: ($screen-width-pc-wide, x),
+    pc: ($screen-width-pc, $screen-width-pc-wide),
+    pc-small: ($screen-width-pad, $screen-width-pc),
+    pad: ($screen-width-mobile, $screen-width-pad),
+    mobile: (x, $screen-width-mobile),
+);
+
+@mixin screen($size, $sign: eq) {
+    @media screen {
+        $value: map-get($screen-map, $size);
+        $min: nth($value, 1);
+        $max: nth($value, 2);
+        @if $sign == eq and $min != x and $max != x {
+            @media (min-width: $min) and (max-width: $max) { @content };
+        }
+        @if $sign == gt and $min != x or $sign == eq and $max == x {
+            @media (min-width: $min) { @content };
+        }
+        @if $sign == lt and $max != x or $sign == eq and $min == x {
+            @media (max-width: $max) { @content };
+        }
+    }
+}

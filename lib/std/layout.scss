@@ -1,0 +1,101 @@
+@use "sass:math";
+
+@mixin position($position, $values, $margin: x) {
+  $props: (top, right, bottom, left);
+  @include set(position, $position);
+  @include set-props($props, $values);
+  @include set(margin, $margin);
+}
+
+
+@mixin flex($dire, $align: x, $wrap: nowrap) {
+  display: flex;
+  $h-align: flex-start;
+  $v-align: center;
+
+  @if $align != x and length($align) == 1 {
+    $h-align: nth($align, 1);
+    $v-align: nth($align, 1);
+  }
+  @if $align != x and length($align) == 2 {
+    $h-align: nth($align, 1);
+    $v-align: nth($align, 2);
+  }
+  @include set(flex-wrap, $wrap);
+  @include set(flex-direction, $dire);
+  @if $dire == row {
+    @include set(justify-content, $h-align);
+    @include set(align-items, $v-align);
+  }
+  @if $dire == column {
+    @include set(align-items, $h-align);
+    @include set(justify-content, $v-align);
+  }
+  > #{$default-flex-child} {
+    flex-shrink: 0;
+    @content;
+  }
+}
+
+@mixin flow($col, $space: 0, $height: auto) {
+  @include flex(row, flex-start, wrap);
+  height: auto; // flex-wrap 父元素不能有高度
+
+  $col-space: get($space, 1, 0);
+  $row-space: get($space, 2, $col-space);
+  $col-space-sum: $col-space * ($col - 1);
+  
+  > #{$default-flow-child} {
+    box-sizing: border-box;
+    $width: math.div(100%, $col);
+    @if $col-space-sum != 0 {
+      $width: calc((100% - #{$col-space-sum}) / #{$col});
+    }
+    
+    @include set(margin-top, $row-space);
+    @include set(margin-right, $col-space);
+
+    width: $width;
+    // 如果 height 等于 width, 则需要多嵌套一层
+    @if $height == fill {
+      padding-bottom: $width;
+      position: relative;
+      > #{$default-flow-fill} {
+        @include position(absolute, 0);
+        @content;
+      }
+    } @else {
+      @include set(height, $height);
+      @content;
+    }
+
+    // 生产边界 class, 通过传 i_#{idx} 和 i-mod_#{idx} 解决 
+    // @for $i from 0 through $col - 1 {
+    //   @if $i < $col and $row-space != x  {
+    //     &.i_#{$i} {
+    //       @include set(margin-top, 0);
+    //     }
+    //   }
+    //   @if $i % $col == $col - 1 and $col-space != x {
+    //     &.i-mod_#{$i} {
+    //       @include set(margin-right, 0);
+    //     }
+    //   }
+    // }
+    // css3 等效写法
+    &:nth-of-type(n) {
+      @include set(margin-top, $row-space);
+      @include set(margin-right, $col-space);
+    }
+    &:nth-of-type(-n+#{$col}) {
+      @include set(margin-top, 0);
+    }
+    &:nth-of-type(#{$col}n) {
+      @include set(margin-right, 0);
+    }
+  }
+}
+
+@mixin insert($name) {
+
+}

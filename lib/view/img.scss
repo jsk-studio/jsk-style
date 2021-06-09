@@ -1,0 +1,25 @@
+%bg-image-base {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+@mixin bg-image($bg-size, $size, $url: x) {
+    @extend %bg-image-base;
+    @include set-size($size);
+    @include set-image-url($url);
+    @include set(background-size, $bg-size);
+}
+
+@mixin img($fit, $size) {
+    display: block;
+    @include set-size($size);
+    @include set(object-fit, $fit);
+}
+
+@mixin bg-contain($size, $url: x) {
+    @include bg-image(contain, $size, $url);
+}
+
+@mixin bg-cover($size, $url: x) {
+    @include bg-image(cover, $size, $url);
+}
+

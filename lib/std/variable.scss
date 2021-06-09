@@ -1,0 +1,60 @@
+// $default-anim-image-dire: column !default;
+$default-url-path: x !default;
+$default-url-chars: ('.', '~', '@', '/') !default;
+$default-colors: () !default;
+$default-theme-colors: () !default;
+$default-theme-container: '#app' !default;
+
+$default-flex-child: '.flex__child' !default;
+$default-flow-child: '.flow__child' !default;
+$default-flow-fill: '.flow__fill' !default;
+
+$screen-width-pc-wide: 1600px !default;
+$screen-width-pc: 1400px !default;
+$screen-width-pad: 980px !default;
+$screen-width-mobile: 480px !default;
+
+$thin: 100;
+$extra-light: 200;
+$light: 300;
+$regular: 400; // normal
+$medium: 500;
+$semi-bold: 600;
+$bold: 700;
+$extra-bold: 800;
+$heavy: 900;
+
+$black: #000;
+$white: #fff;
+$black-0: rgba($black, 0);
+$white-0: rgba($white, 0);
+
+$z-dropdown: 1000;
+$z-sticky: 2000;
+$z-fixed: 2100;
+$z-modal-backdrop: 3000;
+$z-offcanvas: 3100;
+$z-modal: 3200;
+$z-popover: 4000;
+$z-tooltip: 4100;
+
+
+// $default-colors: (
+//     text-color: #000,
+//     text-tips-color: gray,
+//     bg-color: #fafafa,
+//     bg-panel-color: #fff,
+// );
+
+// $dark-colors: (
+//     text-color: #fff,
+//     text-tips-color: gray,
+//     bg-color: #0a0a0a,
+//     bg-panel-color: #999,
+// );
+
+// $default-theme-colors: (
+//     dark: $dark-colors,
+// );
+
+// $bili-pink: #FB7299;

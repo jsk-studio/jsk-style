@@ -1,0 +1,46 @@
+%text-base {
+    word-wrap: break-word;
+    text-decoration: none;
+}
+
+%text-ellipsis {
+    overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+@mixin text($font, $text-align: x, $line-height: x) {
+    @extend %text-base;
+    @include set-font($font);
+    @include set(text-align, $text-align);
+    @include set(line-height, $line-height);
+} 
+
+@mixin text-overflow($lines, $width: 100%) {
+    $line: nth($lines, 1);
+    $line-height: 1.1;
+    @if length($lines) == 2 {
+        $line-height: nth($lines, 2);
+    }
+    @if $line == 1 {
+        display: block;
+	    white-space: nowrap;
+    } @else {
+        display: -webkit-box;
+        -webkit-line-clamp: $line;
+        -webkit-box-orient: vertical;
+    }
+    @if unit($line-height) == "" {
+        // 防止被切掉底边
+        height: $line * $line-height * 1em;
+    } @else {
+        height: $line * $line-height;
+    }
+    @extend %text-base;
+    @extend %text-ellipsis;
+    @include set(width, $width);
+}
+
+@mixin text-overflow-font($small-font, $lines, $width: 100%) {
+    @include text-overflow($lines, font-rate($width, $small-font));
+    @include set-small-font($small-font);
+}

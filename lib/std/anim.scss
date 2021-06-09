@@ -1,0 +1,84 @@
+@use 'sass:math';
+
+@mixin define-image-anim($anim-name, $freq, $dire) {
+    $freq-i: get($freq, 1, 1);
+    $freq-j: get($freq, 2, 1);
+    $count: $freq-i * $freq-j;
+
+    @if $dire == row {
+        background-size: auto $freq-j * 100%;
+    } @else if $dire == column and $freq-j != 1 {
+        background-size: $freq-j * 100% auto;
+    }
+
+    @keyframes #{$anim-name} {
+        @for $i from 1 to $freq-i + 1 {
+            @for $j from 1 to $freq-j + 1 {
+                $start: math.div($i * $j - 1, $count) * 100%;
+                $end: math.div($i * $j, $count) * 100%;
+                #{$start}, #{$end} {
+                    $offset-i: math.div($i - 1, $freq-i - 1) * 100%;
+                    $offset-j: 0%;
+                    @if $freq-j > 1 {
+                        $offset-j: math.div($j - 1, $freq-j - 1) * 100%;
+                    }
+                    @if $dire == row {
+                        background-position: $offset-i $offset-j;
+                    } @else if $dire == column {
+                        background-position: 0% $offset-i;  
+                    }
+                }
+            }
+        }
+    }
+}
+  
+@mixin define-static-anim($anim-name, $transforms) {
+    $len: length($transforms);
+    @keyframes #{$anim-name} {
+      @for $i from 1 to $len + 1 {
+        #{math.div($i - 1, $len - 1) * 100%} {
+          $map: nth($transforms, $i);
+          @each $key, $item in $map {
+            @include set(#{$key}, $item);
+          }
+        }
+      }
+    }
+}
+
+@mixin static-anim($transforms) {
+    $name: unique-id();
+    animation-name: $name;
+    @include define-static-anim($name, $transforms);
+}
+
+%anim-image-base {
+    animation-fill-mode: forwards;
+    animation-timing-function: step-end;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+@mixin anim-image($size, $freq, $img-dire, $url: x) {
+    $name: unique-id();
+    @extend %anim-image-base;
+    @include define-image-anim($name, $freq, $img-dire);
+    @include set-size($size);
+    @include set-image-url($url);
+    animation-name: $name;
+}
+
+
+@mixin anim-image-static($size, $mode, $url: x) {
+    @extend %anim-image-base;
+    @include set-size($size);
+    @include set-image-url($url);
+    @include set(animation-timing-function, $mode);
+}
+
+@mixin set-animation($time, $count, $mode: x) {
+    @include set(animation-duration, $time);
+    @include set(animation-iteration-count, $count);
+    @include set(animation-timing-function, $mode);
+}

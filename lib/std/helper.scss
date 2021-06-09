@@ -1,0 +1,59 @@
+@mixin set($key, $value) {
+    @if $value != x {
+      #{$key}: $value;
+    }
+}
+@mixin set-i($key, $value, $idx) {
+  @if length($value) >= $idx {
+    @include set($key, nth($value, $idx));
+  }
+}
+
+@mixin set-props($props, $values) {
+  @for $i from 0 through length($props) - 1 {
+    $prop: nth($props, $i + 1);
+    $idx: $i % length($values) + 1;
+    @if $i == 3 and length($values) == 3 {
+      @include set(nth($props, 4), nth($values, 2));
+    } @else {
+      @include set($prop, nth($values, $idx));
+    }
+  }
+}
+
+@function get($props, $i, $value: x) {
+  @if length($props) >= $i {
+    $val: nth($props, $i);
+    @if $val == x {
+      @return $value;
+    }
+    @return $val;
+  } @else {
+    @return $value;
+  }
+}
+
+// url
+@mixin set-url($prop, $url) {
+  @if($url != x) {
+    $match-char: false;
+    @each $char in $default-url-chars {
+      @if (str-index($url, $char) == 1) {
+        $match-char: true;
+      }
+    }
+    @if ($default-url-path != x and not $match-char) {
+      @include set($prop, url(#{$default-url-path}#{$url}));
+    } @else {
+      @include set($prop, url($url));
+    }
+  }
+}
+
+@mixin set-image-url($url) {
+  @include set-url(background-image, $url);
+}
+
+@function strip-units($number){
+  @return $number / ($number * 0 + 1);
+}

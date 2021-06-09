@@ -1,0 +1,79 @@
+@mixin set-size($size) {
+  $props: (width, height);
+  @include set-props($props, $size);
+}
+
+@mixin set-radius($radius) {
+  @include set-i(border-radius, $radius, 1);
+  @include set-i(border-width, $radius, 2);
+  @if get($radius, 1) != x {
+    overflow: hidden;
+  }
+  @if get($radius, 2) != x {
+    border-style: solid;
+  } @else {
+    border-width: 0;
+  }
+}
+
+@mixin set-box($color, $radius: x) {
+  @include set-theme-color(x, $color);
+  @include set-radius($radius);
+}
+
+@mixin set-small-font($size) {
+  @if unit($size) == "px" and $size >= 12px {
+    @include set(font-size, $size);
+  } @else {
+    $rate: strip-units($size) / 12 * 1;
+    transform: scale($rate);
+    transform-origin: 0 0;
+    @include set(font-size, 12px);
+    @content;
+  }
+}
+
+@function rate($props, $rate) {
+  $mrate: 1 / $rate;
+  @if type-of($props) != 'list' {
+    @if ($props != x) {
+      @return $props * $mrate;
+    } @else {
+      @return $props;
+    }
+    
+  }
+  $values: ();
+  @each $prop in $props {
+    @if ($prop != x) {
+      $values: append($values, $prop * $mrate); 
+    } @else {
+      $values: append($values, $prop);
+    }
+  }
+  @return $values;
+}
+
+@function font-rate($props, $font-size) {
+  @if unit($font-size) == "px" and $font-size >= 12px {
+    @return $props;
+  }
+  $rate: strip-units($font-size) / 12 * 1;
+  @return rate($props, $rate);  
+}
+
+
+@mixin set-font($font) {
+  @each $val in $font {
+    $type: type-of($val);
+    @if $type == 'number' and unit($val) != "" {
+      @include set(font-size, $val);
+    } @else if $type == 'number' or $type == 'string' and
+      (str-length($val) < 6 or str-slice($val, -5) != 'color') 
+    {
+      @include set(font-weight, $val);
+    } @else {
+      @include set-theme-color($val);
+    }
+  }
+}
