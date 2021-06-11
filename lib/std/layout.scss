@@ -10,17 +10,9 @@
 
 @mixin flex($dire, $align: x, $wrap: nowrap) {
   display: flex;
-  $h-align: flex-start;
-  $v-align: center;
+  $h-align: get($align, 1, center);
+  $v-align: get($align, 2, flex-start);
 
-  @if $align != x and length($align) == 1 {
-    $h-align: nth($align, 1);
-    $v-align: nth($align, 1);
-  }
-  @if $align != x and length($align) == 2 {
-    $h-align: nth($align, 1);
-    $v-align: nth($align, 2);
-  }
   @include set(flex-wrap, $wrap);
   @include set(flex-direction, $dire);
   @if $dire == row {
@@ -96,6 +88,14 @@
   }
 }
 
-@mixin insert($name) {
-
+@mixin insert($names, $display: block) {
+  @each $name in $names {
+    @if $name == before or $name == after {
+      &::#{$name} {
+        content: '\00A0';
+        display: $display;
+        @content;
+      }
+    }
+  }
 }

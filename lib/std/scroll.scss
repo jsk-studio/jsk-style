@@ -1,87 +1,68 @@
 
-@mixin scroll($dire) {
-    @include flex($dire, flex-start, flex-start);
-    flex-wrap: nowrap;
+
+@mixin scroll($dire, $space: 0, $item-space: 0) {
+    @include flex($dire, flex-start);
     box-sizing: border-box;
     overflow: hidden;
 
-
-    
-    > * {
+    > #{$default-scroll-child} {
       box-sizing: border-box;
       flex-shrink: 0;
+
+      @if $dire == column {
+        @include set(margin-top, $item-space);
+        &:first-child {
+          margin-top: 0;
+        }
+      } @else if $dire == row {
+        @include set(margin-left, $item-space);
+        &:first-child {
+          margin-left: 0;
+        }
+      }
       @content;
     }
 
-    &::before, &::after {
-      content: '\00A0';
+    @include insert(before after) {
       flex-shrink: 0;
-      display: block;
-      width: 0;
-      height: 0;
       overflow: hidden;
     }
-  }
-  
-  @mixin scroll-h($space: 0, $item-space: 0) {
-    $side-space: nth($space, 1);
-    // $item-space: nth($space, 1);
-    
-    @if length($space) == 2 {
-      $item-space: nth($space, 2);
-    }
-  
-    @include scroll(row) {
-      @include set(margin-left, $item-space);
-      &:first-child {
-        margin-left: 0;
+
+    $before-space: get($space, 1);
+    $after-space: get($space, 2, $before-space);
+
+    @if $dire == column {
+      @include set-props(padding-top padding-bottom, 0);
+      height: 100%;
+      overflow-y: scroll;
+      align-items: center;
+      &::before {
+        @include set-size(1px $before-space);
       }
-      @content;
-    }
-    width: 100%;
-    height: auto;
-    overflow-x: scroll;
-    padding-left: 0;
-    padding-right: 0;
-  
-    &::before, &::after {
-      @include set-size($side-space 1px);
-    }
-  }
-  
-  @mixin scroll-v($space: 0, $item-space: 0) {
-    $top-space: nth($space, 1);
-    $bottom-space: nth($space, 1);
-    
-    @if length($space) == 2 {
-      $bottom-space: nth($space, 2);
-    }
-   
-    @include scroll(column) {
-      @include set(margin-top, $item-space);
+      &::after {
+        @include set-size(1px $after-space);
+      }
+    } @else if $dire == row {
+      @include set-props(padding-left padding-right, 0);
       width: 100%;
-      &:first-child {
-        margin-top: 0;
+      height: auto;
+      overflow-x: scroll;
+      &::before {
+        @include set-size($before-space 1px);
       }
-      
-      @content;
+      &::after {
+        @include set-size($after-space 1px);
+      }
     }
-    height: 100%;
-    overflow-y: scroll;
-    align-items: center;
-    padding-top: 0;
-    padding-bottom: 0;
+}
+
   
-    &::before {
-      @include set-size(1px $top-space);
-    }
-    &::after {
-      @include set-size(1px $bottom-space);
-    }
+@mixin scroll-nobar($dire, $space: 0, $item-space: 0) {
+  @include scroll($dire, $space, $item-space) {
+    @content;
   }
-  
-@mixin scroll__bar {
   &::-webkit-scrollbar {
-    @content
+    display: none;
   }
 }
+  

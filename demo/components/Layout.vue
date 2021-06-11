@@ -51,16 +51,42 @@
         <span class="label-1">Label1</span>
         <span class="label-1">Label1</span>
     </div>
+    <div>11. Scroll Row Overflow</div>
+    <div class="scroll-row">
+        <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}</div>
+    </div>
+    <div>12. Scroll Row Not Overflow</div>
+    <div class="scroll-row">
+        <div v-for="(_, i) in list.slice(0, 3)">{{i + 1}}</div>
+    </div>
+    <div>13. Full Screen Modal (For Test)</div>
+    <div class="full-screen-modal">
+        <span @click="show('modal-scroll')">SHOW_SCROLL_MODAL</span>
+
+        <div v-if="state.active === 'modal-scroll'" class="modal-backdrop" @click="close">
+            <div class="modal-scroll" @click.stop="">
+                <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}</div>
+            </div>
+        </div>
+    </div>
     
 </template>
 
 <script setup>
+import { reactive } from 'vue';
 const list = new Array(20)
+const state = reactive({ active: '' })
+const show = (name) => {
+    state.active = name
+}
+const close = (name) => {
+    state.active = ''
+}
 </script>
 
 <style lang="scss" scoped>
 $default-theme-container: '.theme-app';
-@import '../../lib/core-dom.scss';
+@import '../../core-dom';
 
 .flow {
     background-color: #ccc;
@@ -171,5 +197,31 @@ $default-theme-container: '.theme-app';
 }
 .label-1 {
     @include label(5px 7px, red blue, x 1px);
+}
+.scroll-row {
+    @include scroll(row, 0, 20px) {
+        background-color: #ccc;
+        width: 100px;
+        height: 100px;
+    }
+}
+.full-screen-modal {
+    > span {
+        display: inline-block;
+        padding: 5px;
+        border: 1px solid #666;
+    }
+}
+.modal-backdrop {
+    @include position(fixed, 0);
+    background-color: rgba($black, 0.3);
+    @include flex(column);
+}
+.modal-scroll {
+    @include scroll-nobar(column, 20px, 20px) {
+        background-color: $white;
+        width: 200px;
+        height: 200px;
+    }
 }
 </style>

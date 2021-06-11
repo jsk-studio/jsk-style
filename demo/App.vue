@@ -1,17 +1,18 @@
 <template>
-<div class="scroll-v">
+<div class="scroll-column">
     <router-view />
 </div>
 
 </template>
 <style lang="scss">
 $default-scroll-overflow: ('#app');
-@import '../lib/rebase.scss';
-
+@import '../rebase';
 </style>
 <style lang="scss" scoped>
-@import '../lib/core-dom.scss';
-.scroll-v {
-    @include scroll-v(0);
+@import '../core-dom';
+.scroll-column {
+    @include scroll(column, 20px 100px, 20px) {
+        width: 100%;
+    }
 }
 </style>
