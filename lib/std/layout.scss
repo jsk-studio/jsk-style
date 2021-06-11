@@ -10,8 +10,12 @@
 
 @mixin flex($dire, $align: x, $wrap: nowrap) {
   display: flex;
-  $h-align: get($align, 1, center);
-  $v-align: get($align, 2, flex-start);
+  $h-align: get($align, 1, flex-start);
+  $v-align: get($align, 2, center);
+
+  @if $align != x and length($align) == 1 {
+    $v-align: nth($align, length($align));
+  }
 
   @include set(flex-wrap, $wrap);
   @include set(flex-direction, $dire);

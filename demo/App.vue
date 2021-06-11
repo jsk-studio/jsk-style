@@ -23,7 +23,7 @@ $default-scroll-overflow: ('#app');
 <style lang="scss" scoped>
 @import '../core-dom';
 .scroll-column {
-    @include scroll(column, 20px 100px, 20px) {
+    @include scroll(column, 10px 100px, 20px) {
         width: 100%;
     }
 }

@@ -234,15 +234,15 @@ $default-theme-container: '.theme-app';
 .modal-backdrop-notouch {
     @include position(absolute, 0);
     background-color: rgba($black, 0.3);
-    @include flex(column);
+    @include flex(column, center);
 }
 .modal-backdrop {
     @include position(fixed, 0);
     background-color: rgba($black, 0.3);
-    @include flex(column);
+    @include flex(column, center);
 }
 .modal-scroll {
-    @include scroll-nobar(column unlock, 20px, 20px) {
+    @include scroll-nobar(column unlock, 25px, 20px) {
         background-color: $white;
         width: 200px;
         height: 200px;
