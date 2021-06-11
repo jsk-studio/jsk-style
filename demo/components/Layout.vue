@@ -62,10 +62,11 @@
     <div>13. Full Screen Modal (For Test)</div>
     <div class="full-screen-modal">
         <span @click="show('modal-scroll')">SHOW_SCROLL_MODAL</span>
-
-        <div v-if="state.active === 'modal-scroll'" class="modal-backdrop" @click="close">
-            <div class="modal-scroll" @click.stop="">
-                <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}</div>
+        <div v-if="state.active" class="modal-touchstop">
+            <div v-if="state.active === 'modal-scroll'" class="modal-backdrop" @click="close">
+                <div class="modal-scroll" @click.stop="">
+                    <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}</div>
+                </div>
             </div>
         </div>
     </div>
@@ -212,8 +213,12 @@ $default-theme-container: '.theme-app';
         border: 1px solid #666;
     }
 }
-.modal-backdrop {
+.modal-touchstop {
     @include position(fixed, 0);
+    touch-action: none;
+}
+.modal-backdrop {
+    @include position(absolute, 0);
     background-color: rgba($black, 0.3);
     @include flex(column);
 }
@@ -223,5 +228,6 @@ $default-theme-container: '.theme-app';
         width: 200px;
         height: 200px;
     }
+    
 }
 </style>

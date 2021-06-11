@@ -7,7 +7,7 @@
   "scripts": {
     "start": "vite demo -c vite.config.js",
     "help": "vite build --help",
-    "build": "vite build demo -c vite.config.js --outDir ../dist"
+    "build": "vite build demo -c vite.config.js --outDir ../dist --base /scss-demo.github.io"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.2.3",
