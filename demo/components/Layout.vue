@@ -62,11 +62,19 @@
     <div>13. Full Screen Modal (For Test)</div>
     <div class="full-screen-modal">
         <span @click="show('modal-scroll')">SHOW_SCROLL_MODAL</span>
-        <div v-if="state.active" class="modal-touchstop">
-            <div v-if="state.active === 'modal-scroll'" class="modal-backdrop" @click="close">
-                <div class="modal-scroll" @click.stop="">
-                    <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}</div>
-                </div>
+        <span @click="show('modal-scroll-notouch')">SHOW_SCROLL_MODAL_NOTOUCH</span>
+    </div>
+   
+    <div v-if="state.active === 'modal-scroll'" class="modal-backdrop" @click="close">
+        <div class="modal-scroll" @click.stop="">
+            <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}</div>
+        </div>
+    </div>
+
+    <div v-if="state.active === 'modal-scroll-notouch'" class="modal-touchstop">
+        <div v-if="state.active === 'modal-scroll-notouch'" class="modal-backdrop-notouch" @click="close">
+            <div class="modal-scroll" @click.stop="">
+                <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}<input /></div>
             </div>
         </div>
     </div>
@@ -74,14 +82,18 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, useContext, inject } from 'vue';
 const list = new Array(20)
 const state = reactive({ active: '' })
+const onLock = inject('onLock')
+
 const show = (name) => {
     state.active = name
+    onLock(true)
 }
 const close = (name) => {
     state.active = ''
+    onLock(false)
 }
 </script>
 
@@ -210,6 +222,7 @@ $default-theme-container: '.theme-app';
     > span {
         display: inline-block;
         padding: 5px;
+        margin: 5px;
         border: 1px solid #666;
     }
 }
@@ -217,8 +230,14 @@ $default-theme-container: '.theme-app';
     @include position(fixed, 0);
     touch-action: none;
 }
-.modal-backdrop {
+
+.modal-backdrop-notouch {
     @include position(absolute, 0);
+    background-color: rgba($black, 0.3);
+    @include flex(column);
+}
+.modal-backdrop {
+    @include position(fixed, 0);
     background-color: rgba($black, 0.3);
     @include flex(column);
 }

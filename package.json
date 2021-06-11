@@ -1,12 +1,13 @@
 {
   "name": "@jsk-style/scss",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "start": "vite demo -c vite.config.js",
     "help": "vite build --help",
+    "start": "vite demo -c vite.config.js",
+    "start:dev": "vite demo -c vite.config.js --port 80 --host dev-scss.jsk-style.com",
     "build": "vite build demo -c vite.config.js --outDir ../dist --base /scss-demo.github.io"
   },
   "devDependencies": {

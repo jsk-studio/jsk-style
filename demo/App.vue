@@ -1,9 +1,17 @@
 <template>
-<div class="scroll-column">
+<div class="scroll-column" :class="{ lock: state.lock }">
     <router-view />
 </div>
 
 </template>
+<script setup>
+import { provide, reactive } from 'vue'
+const state = reactive({ lock: '' })
+const onLock = lock => {
+    state.lock = lock
+}
+provide('onLock', onLock)
+</script>
 <style lang="scss">
 $default-scroll-overflow: ('#app');
 @import '../rebase';

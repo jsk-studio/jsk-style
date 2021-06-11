@@ -4,6 +4,12 @@
     @include flex($dire, flex-start);
     box-sizing: border-box;
     overflow: hidden;
+    /* 解决 iOS 弹层滑动卡顿问题 */
+    -webkit-overflow-scrolling: touch;
+
+    &.lock {
+      overflow: hidden;
+    }
 
     > #{$default-scroll-child} {
       box-sizing: border-box;

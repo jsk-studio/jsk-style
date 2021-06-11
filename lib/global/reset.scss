@@ -27,9 +27,6 @@ $font-family: (
   font-family: $font-family;
   -webkit-font-smoothing: antialiased;
 
-  /* 解决 iOS 弹层滑动卡顿问题 */
-  -webkit-overflow-scrolling: touch;
-
   /* 防止点击闪烁 */
   -webkit-tap-highlight-color: $black-0;
 
