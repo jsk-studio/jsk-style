@@ -212,7 +212,7 @@ $default-theme-container: '.theme-app';
     @include label(5px 7px, red blue, x 1px);
 }
 .scroll-row {
-    @include scroll(row, 0, 20px) {
+    @include scroll-nobar(row, 0, 20px) {
         background-color: #ccc;
         width: 100px;
         height: 100px;
@@ -242,7 +242,7 @@ $default-theme-container: '.theme-app';
     @include flex(column);
 }
 .modal-scroll {
-    @include scroll-nobar(column, 20px, 20px) {
+    @include scroll-nobar(column unlock, 20px, 20px) {
         background-color: $white;
         width: 200px;
         height: 200px;

@@ -1,14 +1,18 @@
 
 
-@mixin scroll($dire, $space: 0, $item-space: 0) {
+@mixin scroll($vals, $space: 0, $item-space: 0) {
+    $dire: get($vals, 1);
+    $lock: get($vals, 2, 'lock');
     @include flex($dire, flex-start);
     box-sizing: border-box;
     overflow: hidden;
     /* 解决 iOS 弹层滑动卡顿问题 */
     -webkit-overflow-scrolling: touch;
 
-    &.lock {
-      overflow: hidden;
+    @if $lock == 'lock' {
+      @at-root #{$default-app-container}#{$default-scroll-lock} & {
+        overflow: hidden;
+      }
     }
 
     > #{$default-scroll-child} {

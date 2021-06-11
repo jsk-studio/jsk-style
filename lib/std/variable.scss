@@ -3,12 +3,13 @@ $default-url-path: x !default;
 $default-url-chars: ('.', '~', '@', '/') !default;
 $default-colors: () !default;
 $default-theme-colors: () !default;
-$default-theme-container: '#app' !default;
+$default-app-container: '#app' !default;
 
 $default-flex-child: '.flex__child' !default;
 $default-flow-child: '.flow__child' !default;
 $default-flow-fill: '.flow__fill' !default;
 $default-scroll-child: '.scroll__child' !default;
+$default-scroll-lock: '.lock' !default;
 
 $screen-width-pc-wide: 1600px !default;
 $screen-width-pc: 1400px !default;

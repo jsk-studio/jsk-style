@@ -1,6 +1,6 @@
 @mixin theme($name) {
     @if ($name) {
-        @at-root #{$default-theme-container}.#{$name}  & {
+        @at-root #{$default-app-container}.#{$name}  & {
             @content;
         }
     }

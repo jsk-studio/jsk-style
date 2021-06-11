@@ -21,6 +21,11 @@ $font-family: (
   }
 }
 
+@if $default-scroll-lockbar != false {
+  #{$default-app-container}#{$default-scroll-lock} {
+    overflow-y: scroll;
+  }
+}
 
 * {
   box-sizing: border-box;

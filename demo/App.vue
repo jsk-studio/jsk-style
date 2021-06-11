@@ -1,5 +1,5 @@
 <template>
-<div class="scroll-column" :class="{ lock: state.lock }">
+<div class="scroll-column">
     <router-view />
 </div>
 
@@ -8,7 +8,11 @@
 import { provide, reactive } from 'vue'
 const state = reactive({ lock: '' })
 const onLock = lock => {
-    state.lock = lock
+    if (lock) {
+        document.getElementById('app').className = 'lock'
+    } else {
+        document.getElementById('app').className = ''
+    }
 }
 provide('onLock', onLock)
 </script>
