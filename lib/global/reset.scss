@@ -6,17 +6,18 @@ $font-family: (
   'Verdana'
 );
 
-@if $default-scroll-overflow != false {
-  html, body { // 解决 ios 回弹问题
-    height: 100%;
+html, body {
+  height: 100%;
+  @if $default-scroll-overflow != false {
     overflow: hidden;
   }
-  @each $val in $default-scroll-overflow {
-    @if type-of($val) == 'string' {
-      #{$val} { // 解决 ios 回弹问题
-        height: 100%;
-        overflow: hidden;
-      }
+}
+
+@each $val in $default-scroll-overflow {
+  @if type-of($val) == 'string' {
+    #{$val} {
+      height: 100%;
+      overflow: hidden;
     }
   }
 }

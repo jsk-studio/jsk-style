@@ -62,18 +62,18 @@
     </div>
     <div>13. Full Screen Modal (For Test)</div>
     <div class="full-screen-modal">
-        <span @click="show('modal-scroll')">SHOW_SCROLL_MODAL</span>
+        <!-- <span @click="show('modal-scroll')">SHOW_SCROLL_MODAL</span> -->
         <span @click="show('modal-scroll-notouch')">SHOW_SCROLL_MODAL_NOTOUCH</span>
     </div>
    
-    <div v-if="state.active === 'modal-scroll'" class="modal-backdrop" @click="close">
+    <!-- <div v-if="state.active === 'modal-scroll'" class="modal-backdrop" @click="close">
         <div class="modal-scroll" @click.stop="">
             <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}</div>
         </div>
-    </div>
+    </div> -->
 
     <div v-if="state.active === 'modal-scroll-notouch'" class="modal-touchstop">
-        <div v-if="state.active === 'modal-scroll-notouch'" class="modal-backdrop-notouch" @click="close">
+        <div class="modal-backdrop-notouch" @click="close">
             <div class="modal-scroll" @click.stop="">
                 <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}<input /></div>
             </div>
@@ -214,13 +214,13 @@ $default-colors: (
     // overflow: hidden;
 }
 .label-1 {
-    @include label(5px 7px, red blue, x 1px);
+    @include label(5px 7px, red blue, 1px);
 }
 .text-1 {
     @include text(m-red);
 }
 .scroll-row {
-    @include scroll-nobar(row, 0, 20px) {
+    @include scroll(row, 0, 20px) {
         background-color: #ccc;
         width: 100px;
         height: 100px;
@@ -237,6 +237,7 @@ $default-colors: (
 .modal-touchstop {
     @include position(fixed, 0);
     touch-action: none;
+    z-index: 10;
 }
 
 .modal-backdrop-notouch {
@@ -244,11 +245,12 @@ $default-colors: (
     background-color: rgba($black, 0.3);
     @include flex(column, center);
 }
-.modal-backdrop {
-    @include position(fixed, 0);
-    background-color: rgba($black, 0.3);
-    @include flex(column, center);
-}
+// .modal-backdrop {
+//     @include position(fixed, 0);
+//     background-color: rgba($black, 0.3);
+//     @include flex(column, center);
+//     z-index: 10;
+// }
 .modal-scroll {
     @include scroll-nobar(column unlock, 25px, 20px) {
         background-color: $white;
