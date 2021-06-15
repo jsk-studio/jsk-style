@@ -50,6 +50,7 @@
         <span class="label-1">Label1</span>
         <span class="label-1">Label1</span>
         <span class="label-1">Label1</span>
+        <span class="text-1">Text1</span>
     </div>
     <div>11. Scroll Row Overflow</div>
     <div class="scroll-row">
@@ -99,6 +100,10 @@ const close = (name) => {
 
 <style lang="scss" scoped>
 $default-theme-container: '.theme-app';
+$default-colors: (
+    m-red: blue,
+    // red: yellow,
+);
 @import '../../core-dom';
 
 .flow {
@@ -201,7 +206,7 @@ $default-theme-container: '.theme-app';
     margin: 20px;
 }
 .btn-1 {
-    @include btn(300px 51px, red blue);
+    @include btn(300px 51px, m-red blue);
     // display: block;
 }
 .labels-wrapper {
@@ -210,6 +215,9 @@ $default-theme-container: '.theme-app';
 }
 .label-1 {
     @include label(5px 7px, red blue, x 1px);
+}
+.text-1 {
+    @include text(m-red);
 }
 .scroll-row {
     @include scroll-nobar(row, 0, 20px) {

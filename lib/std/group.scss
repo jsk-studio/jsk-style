@@ -69,7 +69,7 @@
     @if $type == 'number' and unit($val) != "" {
       @include set(font-size, $val);
     } @else if $type == 'number' or $type == 'string' and
-      (str-length($val) < 6 or str-slice($val, -5) != 'color') 
+      not map-has-key($default-colors, $val)
     {
       @include set(font-weight, $val);
     } @else {
