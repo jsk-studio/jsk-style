@@ -28,13 +28,13 @@ const onLock = lock => {
         if (isRecord) {
             recordScrolled()
         } else {
-            document.getElementById('app').className = 'lock'
+            document.body.className = 'lock'
         }
     } else {
         if (isRecord) {
             resetScrolled()
         } else {
-            document.getElementById('app').className = ''
+            document.body.className = ''
         }
     }
 }

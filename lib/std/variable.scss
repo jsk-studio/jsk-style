@@ -3,7 +3,7 @@ $default-url-path: x !default;
 $default-url-chars: ('.', '~', '@', '/') !default;
 $default-colors: () !default;
 $default-theme-colors: () !default;
-$default-app-container: '#app' !default;
+$default-app-container: 'body' !default;
 
 $default-flex-child: '.flex__child' !default;
 $default-flow-child: '.flow__child' !default;

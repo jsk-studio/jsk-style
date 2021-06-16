@@ -72,10 +72,17 @@
         </div>
     </div> -->
 
-    <div v-if="state.active === 'modal-scroll-notouch'" class="modal-touchstop">
-        <div class="modal-backdrop-notouch" @click="close">
+    <div v-if="state.active.startsWith('modal-scroll-notouch')" class="modal-touchstop">
+        <div class="modal-backdrop-notouch" @click="close()">
             <div class="modal-scroll" @click.stop="">
-                <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}<input /></div>
+                <div v-for="(_, i) in list.slice(0, 8)">{{i + 1}}</div>
+                <input placeholder="TEST FOR INPUT ANCHOR" />
+                <span @click="show('modal-scroll-notouch-2')">SHOW_SCROLL_MODAL NOTOUCH</span>
+            </div>
+        </div>
+        <div v-if="state.active === 'modal-scroll-notouch-2'" class="modal-backdrop-notouch notouch2" @click="close('modal-scroll-notouch')">
+            <div class="modal-scroll" @click.stop="">
+                <div v-for="(_, i) in list.slice(0, 8)"> modal-2 {{i + 1}}</div>
             </div>
         </div>
     </div>
@@ -89,12 +96,16 @@ const state = reactive({ active: '' })
 const onLock = inject('onLock')
 
 const show = (name) => {
+    console.log(name);
     state.active = name
     onLock(true)
 }
 const close = (name) => {
-    state.active = ''
-    onLock(false)
+    console.log(name);
+    state.active = name || ''
+    if (!state.active) {
+        onLock(false)
+    }
 }
 </script>
 
@@ -244,6 +255,9 @@ $default-colors: (
     @include position(absolute, 0);
     background-color: rgba($black, 0.3);
     @include flex(column, center);
+    &.notouch2 {
+        align-items: flex-start;
+    }
 }
 // .modal-backdrop {
 //     @include position(fixed, 0);
@@ -257,6 +271,5 @@ $default-colors: (
         width: 200px;
         height: 200px;
     }
-    
 }
 </style>

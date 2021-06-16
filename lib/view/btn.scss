@@ -5,12 +5,12 @@
 }
 
 %label-base {
+    display: inline-block;
     box-sizing: border-box;
     user-select: none;
     white-space: nowrap;
-    display: inline-block;
-
 }
+
 @mixin btn($size, $color, $radius: x) {
     @extend %btn-base;
     @include flex(row, center);
@@ -19,28 +19,8 @@
     @include set-i(line-height, $size, 2);
 }
 
-// @mixin btn-font($small-font, $size, $color, $radius: x) {
-//     @include btn(
-//         font-rate($size, $small-font), 
-//         $color, 
-//         // 1 像素的圆角可以解决单数字体大小下的渲染问题
-//         get($radius, 1, 1px) font-rate(get($radius, 2), $small-font),
-//     );
-//     @include set-small-font($small-font);
-// }
-
 @mixin label($padding, $color, $radius: x) {
     @extend %label-base;
     @include set(padding, $padding);
     @include set-box($color, $radius);
 }
-
-// @mixin label-font($small-font, $padding, $color, $radius: x) {
-//     @include label(
-//         font-rate($padding, $small-font), 
-//         $color, 
-//         // 1 像素的圆角可以解决单数字体大小下的渲染问题
-//         get($radius, 1, 1px) font-rate(get($radius, 2), $small-font),
-//     );
-//     @include set-small-font($small-font);
-// }

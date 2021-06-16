@@ -9,8 +9,8 @@
     @include set(background-size, $bg-size);
 }
 
-@mixin img($fit, $size) {
-    display: block;
+@mixin img($fit, $size, $display: block) {
+    display: $display;
     @include set-size($size);
     @include set(object-fit, $fit);
 }
