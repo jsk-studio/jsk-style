@@ -29,7 +29,10 @@
     }
   } @else if type-of($i) == 'number' and length($props) >= $i {
     $val: nth($props, $i);
-  } 
+  }
+  @if $val == x {
+    $val: $value;
+  }
   @return $val;
 }
 
