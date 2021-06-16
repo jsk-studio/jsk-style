@@ -96,12 +96,10 @@ const state = reactive({ active: '' })
 const onLock = inject('onLock')
 
 const show = (name) => {
-    console.log(name);
     state.active = name
     onLock(true)
 }
 const close = (name) => {
-    console.log(name);
     state.active = name || ''
     if (!state.active) {
         onLock(false)
@@ -113,7 +111,7 @@ const close = (name) => {
 $default-theme-container: '.theme-app';
 $default-colors: (
     m-red: blue,
-    // red: yellow,
+    m-blue: yellow,
 );
 @import '../../core-dom';
 
@@ -218,7 +216,7 @@ $default-colors: (
 }
 .btn-1 {
     @include btn(300px 51px, m-red blue);
-    // display: block;
+    border-top: 4px solid get-color(m-blue);
 }
 .labels-wrapper {
     background-color: #ccc;

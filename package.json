@@ -1,6 +1,6 @@
 {
   "name": "@jsk-style/scss",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "publishConfig": {
     "access": "public"
   },

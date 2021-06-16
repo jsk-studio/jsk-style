@@ -22,15 +22,15 @@
 }
 
 @function get($props, $i, $value: x) {
-  @if length($props) >= $i {
-    $val: nth($props, $i);
-    @if $val == x {
-      @return $value;
+  $val: $value;
+  @if type-of($props) == 'map' {
+    @if map-has-key($props, $i) {
+      $val: map-get($props, $i);
     }
-    @return $val;
-  } @else {
-    @return $value;
-  }
+  } @else if type-of($i) == 'number' and length($props) >= $i {
+    $val: nth($props, $i);
+  } 
+  @return $val;
 }
 
 // url

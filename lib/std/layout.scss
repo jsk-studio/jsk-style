@@ -1,5 +1,3 @@
-@use "sass:math";
-
 @mixin position($position, $values, $margin: x) {
   $props: (top, right, bottom, left);
   @include set(position, $position);
@@ -43,7 +41,7 @@
   
   > #{$default-flow-child} {
     box-sizing: border-box;
-    $width: math.div(100%, $col);
+    $width: 100% / $col;
     @if $col-space-sum != 0 {
       $width: calc((100% - #{$col-space-sum}) / #{$col});
     }
@@ -92,15 +90,35 @@
   }
 }
 
-@mixin insert($names, $display: block, $size: x) {
+@mixin insert($names, $size: x, $display: block) {
   @each $name in $names {
     @if $name == before or $name == after {
       &::#{$name} {
         content: '\00A0';
-        display: $display;
+        @include set(display, $display);
         @include set-size($size);
         @content;
       }
     }
+  }
+}
+
+@mixin insert-rect($name, $size, $color) {
+  @include insert($name) {
+    @include set-size($size);
+    @include set-box($color);
+    @content;
+  }
+}
+
+@mixin insert-traingle($name, $size, $color) {
+  $width: get($size, 1);
+  $height: get($size, 2, $width);
+  @include insert($name) {
+    @include set-size(0);
+    border-left: $width solid $black-0;
+    border-right: $width solid $black-0;
+    border-bottom: $height * 2 solid $color;
+    @content;
   }
 }

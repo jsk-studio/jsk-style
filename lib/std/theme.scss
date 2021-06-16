@@ -6,11 +6,15 @@
     }
 }
 
+@function get-color($color, $theme: x) {
+  $color-map: get($default-theme-colors, $theme, $default-colors);
+  @return get($color-map, $color, $color);
+}
+
 @function get-theme-color($colors, $color-map: $default-colors) {
     $theme-colors: ();
     @each $name in $colors {
         $color: map-get($color-map, $name);
-        $type: type-of($name);
         @if $color != null {
             $theme-colors: append($theme-colors, $color);
         } @else if $color-map == $default-colors {
