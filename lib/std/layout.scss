@@ -122,3 +122,24 @@
     @content;
   }
 }
+
+// 主要为了解决渐变色 transition 不支持动画
+@mixin insert-fill($name) {
+  position: relative;
+  z-index: 1;
+  @include insert($name) {
+      @include position(absolute, 0);
+      z-index: -1;
+      @content;
+  }
+}
+
+@mixin insert-icon($name, $icon) {
+  $icon-family: get($icon, 1);
+  $icon-name: get($icon, 2);
+  @include insert($name, x, inline-block) {
+      font-family: $icon-family;
+      content: get($default-icons, $icon-name, $name);
+      @content;
+  }
+}
