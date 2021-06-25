@@ -172,42 +172,38 @@ $default-colors: (
 .static-image-anim {
     $rate: 0.8;
     display: inline-block;
-    @include anim-image-static(60px * $rate 100px * $rate, ease-in-out);
+    @include anim-image-static(60px * $rate 100px * $rate);
     @include static-anim((
         (background-position: 0 0),
         (background-position: 0 100%),
         (background-position: 0 0),
-    ));
-    @include set-animation(1s, infinite);
+    ), 1s infinite ease-in-out);
     @include set-image-url('../assets/arrow.png');
 }
 
 .static-image-anim-rotate {
     $rate: 0.8;
     display: inline-block;
-    @include anim-image-static(60px * $rate 100px * $rate, linear);
+    @include anim-image-static(60px * $rate 180px * $rate);
     @include static-anim((
         (background-position: 0 0, transform: rotate(0)),
         (background-position: 0 100%, transform: rotate(360deg)),
         (background-position: 0 0, transform: rotate(720deg)),
-    ));
-    @include set-animation(1s, infinite);
+    ), 1s infinite linear);
     @include set-image-url('../assets/arrow.png');
 }
 
 .image-anim-vertial {
     $rate: 0.2;
     display: inline-block;
-    @include anim-image(60vw * $rate 100vw * $rate, 12, column);
-    @include set-animation(1s, infinite);
+    @include anim-image(60vw * $rate 100vw * $rate, column 12, 1s infinite);
     @include set-image-url('../assets/arrow-v.png');
 }
 
 .image-anim-5x4 {
     $rate: 1;
     display: inline-block;
-    @include anim-image(122px * $rate 162.5px * $rate, 5 4, row);
-    @include set-animation(1s, infinite);
+    @include anim-image(122px * $rate 162.5px * $rate, row 5 4, 1s infinite);
     @include set-image-url('../assets/fire-5x4.jpg');
 }
 .buttons-labels {

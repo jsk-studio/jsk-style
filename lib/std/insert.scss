@@ -1,0 +1,142 @@
+
+
+
+@mixin insert($names, $size: x, $display: block) {
+    @each $name in $names {
+      @if $name == before or $name == after {
+        &::#{$name} {
+          content: '\00A0';
+          @include set(display, $display);
+          @include set-size($size);
+          @content;
+        }
+      }
+    }
+  }
+  
+  @mixin insert-rect($name, $size, $color) {
+    @include insert($name) {
+      @include set-size($size);
+      @include set-box($color);
+      @content;
+    }
+  }
+  
+  @mixin insert-traingle($name, $size, $color) {
+    $width: get($size, 1);
+    $height: get($size, 2, $width);
+    @include insert($name) {
+      @include set-size(0);
+      border-left: $width solid $black-0;
+      border-right: $width solid $black-0;
+      border-bottom: $height * 2 solid $color;
+      @content;
+    }
+  }
+  
+  // 主要为了解决渐变色 transition 不支持动画
+  @mixin insert-fill($name) {
+    position: relative;
+    z-index: 1;
+    @include insert($name) {
+        @include position(absolute, 0);
+        z-index: -1;
+        @content;
+    }
+  }
+  
+  @function get-icon($icon) {
+    $icon-family: get($icon, 1);
+    $icon-name: get($icon, 2);
+    @return get($default-icons, $icon-name, $icon-name);
+  }
+  
+  @mixin insert-icon($name, $icon) {
+    $icon-family: get($icon, 1);
+    $icon-name: get($icon, 2);
+    @include insert($name, x, inline-block) {
+        font-family: $icon-family;
+        content: get-icon($icon);
+        @content;
+    }
+  }
+  
+
+// root:hover.name -> root.name:hover
+// root::after.name -> root.name::after
+// root:hover::after.name -> root.name:hover::after
+// root:hover::after .name -> root .name:hover::after
+@mixin escape($self: '&') {
+    @if str-index($self, '&') == null {
+        $self: '& #{$self}'
+    }
+    $self: str-replace($self, '&', #{&});
+    @each $root in selector-parse($self) {
+        $list: ();
+        $status: '*';
+        $suffix: '*';
+        @each $val in simple-selectors(nth($root, length($root))) {
+            @if str-index($val, ':') == null {
+                $list: append($list, $val);
+            } @else if str-index($val, 'before') != null 
+                or str-index($val, 'after') != null {
+                $suffix: $val;
+            } @else {
+                $status: $val;
+            }
+        }
+        $root: selector-replace($root, $status, "*");
+        $root: selector-replace($root, $suffix, "*");
+        $root: selector-unify($root, $status);
+        $root: selector-unify($root, $suffix);
+        @at-root #{$root} {
+            @content;
+        }
+    }
+}
+
+@mixin selector($selector, $transforms...) {
+    $trans-props: '';
+    $trans-values: ();
+    @each $transform in $transforms {
+        $offset: 0; 
+        $prop: get($transform, 1);
+        $prop-from: get($transform, 2);
+        $prop-to: get($transform, 3);
+        @if type-of($prop-to) == 'number' and unit($prop-to) == 's' {
+            $offset: -1;
+            $prop-to: $prop-from;
+        }
+        @if type-of($prop-from) == 'number' and unit($prop-from) == 's' {
+            $offset: -2;
+            $prop-from: x;
+            $prop-to: $prop-from;
+        }      
+        $time: get($transform, 4 + $offset, '');
+        $mode: get($transform, 5 + $offset, '');
+        @if $time != x { $prop: '#{$prop} #{$time}' }
+        @if $mode != x { $prop: '#{$prop} #{$mode}' }
+        @if $trans-props == '' { $trans-props: '#{$prop}' } 
+        @else { $trans-props: '#{$trans-props}, #{$prop}' }
+        $trans-values: append($trans-values, (get($transform, 1), $prop-from, $prop-to));
+    }
+    @if $trans-props != '' {
+        transition: unquote($trans-props);
+    }
+    @each $values in $trans-values {
+        $prop: get($values, 1);
+        $prop-from: get($values, 2);
+        $prop-to: get($values, 3);
+        @if $prop-from != $prop-to {
+            @include set($prop, $prop-from);
+        }
+    }
+    @include escape($selector) {
+        @each $values in $trans-values {
+            $prop: get($values, 1);
+            $prop-to: get($values, 3);
+            @include set($prop, $prop-to);
+        }
+        @content;
+    }
+}

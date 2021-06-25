@@ -1,8 +1,9 @@
 @use 'sass:math';
 
-@mixin define-image-anim($anim-name, $freq, $dire) {
-    $freq-i: get($freq, 1, 1);
-    $freq-j: get($freq, 2, 1);
+@mixin define-image-anim($anim-name, $freq) {
+    $dire: get($freq, 1);
+    $freq-i: get($freq, 2, 1);
+    $freq-j: get($freq, 3, 1);
     $count: $freq-i * $freq-j;
 
     @if $dire == row {
@@ -47,10 +48,21 @@
     }
 }
 
-@mixin static-anim($transforms) {
+@mixin set-animation($anims) {
+    @include set-i(animation-duration, $anims, 1);
+    @include set-i(animation-iteration-count, $anims, 2);
+    @include set-i(animation-timing-function, $anims, 3);
+  }
+
+@mixin static-anim($transforms, $anim-values: x) {
     $name: unique-id();
     animation-name: $name;
-    @include define-static-anim($name, $transforms);
+    @if type-of($transforms) == 'list' {
+        @include define-static-anim($name, $transforms);
+    } @else if type-of($transforms) == 'map' {
+        // TODO
+    }
+    @include set-animation($anim-values);
 }
 
 %anim-image-base {
@@ -60,25 +72,19 @@
     background-size: 100% auto;
 }
 
-@mixin anim-image($size, $freq, $img-dire, $url: x) {
+@mixin anim-image($size, $freq, $anim-values: x, $url: x) {
     $name: unique-id();
-    @extend %anim-image-base;
-    @include define-image-anim($name, $freq, $img-dire);
-    @include set-size($size);
-    @include set-image-url($url);
     animation-name: $name;
+    @extend %anim-image-base;
+    @include define-image-anim($name, $freq);
+    @include set-size($size);
+    @include set-image-url($url);
+    @include set-animation($anim-values);
 }
 
 
-@mixin anim-image-static($size, $mode, $url: x) {
+@mixin anim-image-static($size, $url: x) {
     @extend %anim-image-base;
     @include set-size($size);
     @include set-image-url($url);
-    @include set(animation-timing-function, $mode);
-}
-
-@mixin set-animation($time, $count, $mode: x) {
-    @include set(animation-duration, $time);
-    @include set(animation-iteration-count, $count);
-    @include set(animation-timing-function, $mode);
 }

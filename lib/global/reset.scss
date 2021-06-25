@@ -22,11 +22,11 @@ html, body {
   }
 }
 
-@if $default-scroll-lockbar != false {
-  #{$default-app-container}#{$default-scroll-lock} {
-    overflow-y: scroll;
-  }
-}
+// @if $default-scroll-lockbar != false {
+//   #{$default-app-container}#{$default-scroll-lock} {
+//     overflow-y: auto;
+//   }
+// }
 
 * {
   box-sizing: border-box;
