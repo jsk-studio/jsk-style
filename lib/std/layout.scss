@@ -31,10 +31,12 @@
   }
 }
 
-@mixin flow($col, $space: 0, $height: auto) {
+@mixin flow($vals, $space: 0) {
   @include flex(row, flex-start, wrap);
   height: auto; // flex-wrap 父元素不能有高度
 
+  $col: get($vals, 1);
+  $isRect: has($vals, 'rect');
   $col-space: get($space, 1, 0);
   $row-space: get($space, 2, $col-space);
   $col-space-sum: $col-space * ($col - 1);
@@ -51,7 +53,7 @@
 
     width: $width;
     // 如果 height 等于 width, 则需要多嵌套一层
-    @if $height == fill {
+    @if $isRect {
       padding-bottom: $width;
       position: relative;
       > #{$default-flow-fill} {
@@ -59,7 +61,6 @@
         @content;
       }
     } @else {
-      @include set(height, $height);
       @content;
     }
 
@@ -76,7 +77,6 @@
     //     }
     //   }
     // }
-    // css3 等效写法
     &:nth-of-type(n) {
       @include set(margin-top, $row-space);
       @include set(margin-right, $col-space);

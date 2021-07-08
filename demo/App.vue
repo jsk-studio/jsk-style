@@ -28,13 +28,13 @@ const onLock = lock => {
         if (isRecord) {
             recordScrolled()
         } else {
-            document.body.className = 'lock'
+            document.body.classList.add('lock')
         }
     } else {
         if (isRecord) {
             resetScrolled()
         } else {
-            document.body.className = ''
+            document.body.classList.remove('lock')
         }
     }
 }
@@ -49,14 +49,12 @@ $default-scroll-overflow: ('#app');
 .scroll-column {
     padding: 30px 0;
     &.inline {
-        @include scroll(column, 10px 100px, 20px) {
-            width: 100%;
-        }
+        @include scroll(column, 10px 100px 20px);
     }
 }
 .header {
     @include position(fixed, 0 0 x);
-    @include set-box($white blue, 1px);
+    @include set-box($white blue, 0 1px);
     height: 30px;
     z-index: 1;
 }

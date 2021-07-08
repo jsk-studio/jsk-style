@@ -36,6 +36,13 @@
   @return $val;
 }
 
+@function has($props, $value) {
+  @if type-of($props) == 'list' {
+    @return index($props, $value) != null;
+  }
+  @return false;
+}
+
 // url
 @mixin set-url($prop, $url) {
   @if($url != x) {

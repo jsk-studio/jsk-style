@@ -23,16 +23,9 @@
         </div>
     </div>
     <div>5. Theme Base</div>
-    <div class="theme-app">
+    <div class="theme-app" :class="state.themeName">
         <div class="theme-text">Theme Text</div>
-    </div>
-    <div>6. Theme Light</div>
-    <div class="theme-app light">
-        <div class="theme-text">Theme Text</div>
-    </div>
-    <div>7. Theme Dark</div>
-    <div class="theme-app dark">
-        <div class="theme-text">Theme Text</div>
+        <div @click="onTheme">Change Theme</div>
     </div>
     <div>8. Static Animation</div>
     <div class="static-anim">
@@ -92,7 +85,7 @@
 <script setup>
 import { reactive, useContext, inject } from 'vue';
 const list = new Array(20)
-const state = reactive({ active: '' })
+const state = reactive({ active: '', themeName: '' })
 const onLock = inject('onLock')
 
 const show = (name) => {
@@ -105,15 +98,28 @@ const close = (name) => {
         onLock(false)
     }
 }
+const onTheme = () => {
+    const cls = document.body.classList
+    if (cls.contains('light')) {
+        cls.remove('light')
+        cls.add('dark')
+    } else if (cls.contains('dark')) {
+        cls.remove('dark')
+    } else {
+        cls.add('light')
+    }
+}
 </script>
 
 <style lang="scss" scoped>
+@import '../../core-dom';
+
 $default-theme-container: '.theme-app';
 $default-colors: (
     m-red: blue,
     m-blue: yellow,
+    m-linear: linear-gradient(to right, #000, $black-0),
 );
-@import '../../core-dom';
 
 .flow {
     background-color: #ccc;
@@ -127,21 +133,20 @@ $default-colors: (
     padding: 5px;
     padding-bottom: 35px;
     
-    @include flow(3, 5px 35px, fill) {
+    @include flow(3 rect, 5px 35px) {
         background-color: #ccc;
-       
     }
     @include screen(pad) {
-        @include flow(4, 5px 35px, fill);
+        @include flow(4 rect, 5px 35px);
     }
     @include screen(pc-small) {
-        @include flow(5, 5px 35px, fill);
+        @include flow(5 rect, 5px 35px);
     }
     @include screen(pc) {
-        @include flow(6, 5px 35px, fill);
+        @include flow(6 rect, 5px 35px);
     }
     @include screen(pc-wide) {
-        @include flow(7, 5px 35px, fill);
+        @include flow(7 rect, 5px 35px);
     }
 
     .flow-bottom {
@@ -158,14 +163,11 @@ $default-colors: (
     @include set-font(16px red);
     @include theme(dark) {
         @include set-font(#fff);
-        @include set-box(
-            linear-gradient(to right, #000, $black-0) #000, 
-            0 3px,
-        );
+        @include set-box(m-linear #000, 3px);
     }
     @include theme(light) {
         @include set-font(#000);
-        @include set-box(#ccc #666, 0 2px);
+        @include set-box(#ccc #666, 2px);
     }
 }
 
@@ -211,7 +213,7 @@ $default-colors: (
     margin: 20px;
 }
 .btn-1 {
-    @include btn(300px 51px, m-red blue);
+    @include btn(300px 51px, m-red yellow, 10px 1px);
     border-top: 4px solid get-color(m-blue);
 }
 .labels-wrapper {
@@ -225,7 +227,7 @@ $default-colors: (
     @include text(m-red);
 }
 .scroll-row {
-    @include scroll(row, 0, 20px) {
+    @include scroll(row, 0 20px) {
         background-color: #ccc;
         width: 100px;
         height: 100px;
@@ -260,7 +262,7 @@ $default-colors: (
 //     z-index: 10;
 // }
 .modal-scroll {
-    @include scroll-nobar(column unlock, 25px, 20px) {
+    @include scroll(column nobar unlock, 25px 20px) {
         background-color: $white;
         width: 200px;
         height: 200px;

@@ -1,15 +1,24 @@
 
 
-@mixin scroll($vals, $space: 0, $item-space: 0) {
+@mixin scroll($vals, $space: 0) {
     $dire: get($vals, 1);
-    $lock: get($vals, 2, 'lock');
+    $unlock: has($vals, 'unlock');
+    $nobar: has($vals, 'nobar');
+    $center: has($vals, 'center');
+
     @include flex($dire, flex-start);
     box-sizing: border-box;
     overflow: hidden;
     /* 解决 iOS 弹层滑动卡顿问题 */
     -webkit-overflow-scrolling: touch;
 
-    @if $lock == 'lock' {
+    @if $nobar {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    @if $unlock == false {
       @at-root #{$default-app-container}#{$default-scroll-lock} & {
         overflow: hidden;
       }
@@ -19,7 +28,10 @@
       box-sizing: border-box;
       flex-shrink: 0;
 
+      $item-space: get($space, length($space), 0);
+
       @if $dire == column {
+        width: 100%;
         @include set(margin-top, $item-space);
         &:first-child {
           margin-top: 0;
@@ -38,8 +50,11 @@
       overflow: hidden;
     }
 
-    $before-space: get($space, 1);
-    $after-space: get($space, 2, $before-space);
+    $before-space: get($space, 1, 0);
+    $after-space: $before-space;
+    @if length($space) == 3 {
+      $after-space: get($space, 2, 0);
+    }
 
     @if $dire == column {
       @include set-props(padding-top padding-bottom, 0);
@@ -64,14 +79,4 @@
         @include set-size($after-space 1px);
       }
     }
-}
-
-  
-@mixin scroll-nobar($dire, $space: 0, $item-space: 0) {
-  @include scroll($dire, $space, $item-space) {
-    @content;
-  }
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }

@@ -4,12 +4,12 @@
 }
 
 @mixin set-radius($radius) {
-  @include set-i(border-width, $radius, 1);
-  @include set-i(border-radius, $radius, 2);
-  @if get($radius, 2) != x {
+  @include set-i(border-radius, $radius, 1);
+  @include set-i(border-width, $radius, 2);
+  @if get($radius, 1) != x {
     overflow: hidden;
   }
-  @if get($radius, 1) != x {
+  @if get($radius, 2) != x {
     border-style: solid;
   } @else {
     border-width: 0;
