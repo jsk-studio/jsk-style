@@ -1,0 +1,12 @@
+language: node_js
+node_js: node
+cache: yarn
+branches:
+  only:
+  - master
+install:
+  - yarn install
+script:
+  - git version patch
+  - yarn publish
+  - git push

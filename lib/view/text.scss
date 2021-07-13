@@ -8,11 +8,17 @@
 	text-overflow: ellipsis;
 }
 
-
-@mixin text-overflow($lines, $width: 100%) {
+@mixin text-overflow($lines, $width: x) {
     $line: get($lines, 1);
     $line-height: get($lines, 2, 1.1);
     flex-shrink: 1;
+
+    $maxHeight: has($width, 'wrap');
+
+    $height-prop: height;
+    @if $maxHeight {
+        $height-prop: max-height;
+    }
     
     @if $line == 1 {
         display: block;
@@ -24,13 +30,17 @@
     }
     @if unit($line-height) == "" {
         // 防止被切掉底边
-        height: $line * $line-height * 1em;
+        #{$height-prop}: $line * $line-height * 1em;
     } @else {
-        height: $line * $line-height;
+        #{$height-prop}: $line * $line-height;
     }
     @extend %text-base;
     @extend %text-ellipsis;
-    @include set(width, $width);
+    @if not $maxHeight or length($width) > 1 and not has($width, 'x') {
+        @include set(width, get($width, 1));
+    } @else {
+        @include set(width, 100%);
+    }
 }
 
 @mixin text($font, $align: x, $overflow: x) {
@@ -41,11 +51,12 @@
     @include set(line-height, $line-height);
     @if $overflow != x {
         $lines: (get($overflow, 1), $line-height);
-        @include text-overflow($lines, get($overflow, 2, 100%))
+        @include text-overflow($lines, get($overflow, 2, 100%) get($overflow, 3))
     }
 } 
 
-@mixin text-overflow-font($small-font, $lines, $width: 100%) {
-    @include text-overflow($lines, font-rate($width, $small-font));
-    @include set-small-font($small-font);
+@mixin label($padding, $color, $radius: x) {
+    white-space: nowrap;
+    @include set(padding, $padding);
+    @include set-box($color, $radius);
 }

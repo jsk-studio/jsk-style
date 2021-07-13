@@ -9,26 +9,26 @@
     @include set(object-fit, $fit);
 }
 
-@mixin bg-image($bg-size, $size, $url: x) {
+@mixin bg-image($bg-size, $size, $colors: x, $radius: x) {
     @extend %bg-image-base;
     @include set-size($size);
-    @include set-image-url($url);
     @include set(background-size, $bg-size);
+    @include set-box($colors);
+    @include set-radius($radius);
     img {
         @include img($bg-size, 100%);
         @content;
     }
 }
 
-@mixin bg-contain($size, $url: x) {
-    @include bg-image(contain, $size, $url) {
+@mixin bg-contain($size, $colors: x, $radius: x) {
+    @include bg-image(contain, $size, $colors, $radius) {
         @content;
     }
 }
 
-@mixin bg-cover($size, $url: x) {
-    @include bg-image(cover, $size, $url) {
+@mixin bg-cover($size, $colors: x, $radius: x) {
+    @include bg-image(cover, $size, $colors, $radius) {
         @content;
     }
 }
-
