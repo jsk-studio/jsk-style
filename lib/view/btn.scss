@@ -16,7 +16,6 @@
     @include flex(row, center);
     @include set-size($size);
     @include set-box($color, $radius);
-    @include set-i(line-height, $size, 2);
 }
 
 @mixin label($padding, $color, $radius: x) {

@@ -8,19 +8,12 @@
 	text-overflow: ellipsis;
 }
 
-@mixin text($font, $text-align: x, $line-height: x) {
-    @extend %text-base;
-    @include set-font($font);
-    @include set(text-align, $text-align);
-    @include set(line-height, $line-height);
-} 
 
 @mixin text-overflow($lines, $width: 100%) {
-    $line: nth($lines, 1);
-    $line-height: 1.1;
-    @if length($lines) == 2 {
-        $line-height: nth($lines, 2);
-    }
+    $line: get($lines, 1);
+    $line-height: get($lines, 2, 1.1);
+    flex-shrink: 1;
+    
     @if $line == 1 {
         display: block;
 	    white-space: nowrap;
@@ -39,6 +32,18 @@
     @extend %text-ellipsis;
     @include set(width, $width);
 }
+
+@mixin text($font, $align: x, $overflow: x) {
+    @extend %text-base;
+    @include set-font($font);
+    @include set-i(text-align, $align, 1);
+    $line-height: get($align, 2);
+    @include set(line-height, $line-height);
+    @if $overflow != x {
+        $lines: (get($overflow, 1), $line-height);
+        @include text-overflow($lines, get($overflow, 2, 100%))
+    }
+} 
 
 @mixin text-overflow-font($small-font, $lines, $width: 100%) {
     @include text-overflow($lines, font-rate($width, $small-font));

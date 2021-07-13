@@ -50,6 +50,12 @@ img {
   vertical-align: top;
 }
 
+// 去除 img src 为空时的边框
+img[src=""],
+img:not([src]) {
+  opacity:0; 
+}
+
 input {
   border: none;
   padding: 0;

@@ -2,12 +2,6 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-@mixin bg-image($bg-size, $size, $url: x) {
-    @extend %bg-image-base;
-    @include set-size($size);
-    @include set-image-url($url);
-    @include set(background-size, $bg-size);
-}
 
 @mixin img($fit, $size, $display: block) {
     display: $display;
@@ -15,11 +9,26 @@
     @include set(object-fit, $fit);
 }
 
+@mixin bg-image($bg-size, $size, $url: x) {
+    @extend %bg-image-base;
+    @include set-size($size);
+    @include set-image-url($url);
+    @include set(background-size, $bg-size);
+    img {
+        @include img($bg-size, 100%);
+        @content;
+    }
+}
+
 @mixin bg-contain($size, $url: x) {
-    @include bg-image(contain, $size, $url);
+    @include bg-image(contain, $size, $url) {
+        @content;
+    }
 }
 
 @mixin bg-cover($size, $url: x) {
-    @include bg-image(cover, $size, $url);
+    @include bg-image(cover, $size, $url) {
+        @content;
+    }
 }
 
