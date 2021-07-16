@@ -36,6 +36,15 @@
   @return $val;
 }
 
+@function get-by($props, $type) {
+  @each $prop in $props {
+    @if type-of($prop) == $type {
+      @return $prop;
+    }
+  }
+  @return x;
+}
+
 @function has($props, $value) {
   @if type-of($props) == 'list' {
     @return index($props, $value) != null;

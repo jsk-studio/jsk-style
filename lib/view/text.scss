@@ -7,10 +7,9 @@
     overflow: hidden;
 	text-overflow: ellipsis;
 }
-
 @mixin text-overflow($lines, $width: x) {
     $line: get($lines, 1);
-    $line-height: get($lines, 2, 1.1);
+    $line-height: get($lines, 2, 1.15);
     flex-shrink: 1;
 
     $maxHeight: has($width, 'wrap');
@@ -29,7 +28,7 @@
         -webkit-box-orient: vertical;
     }
     @if unit($line-height) == "" {
-        // 防止被切掉底边
+        // 防止被切掉底边, 兼容性有问题
         #{$height-prop}: $line * $line-height * 1em;
     } @else {
         #{$height-prop}: $line * $line-height;
@@ -48,12 +47,17 @@
     @include set-font($font);
     @include set-i(text-align, $align, 1);
     $line-height: get($align, 2);
+    $fsize: get-by($font, 'number');
+    @if $line-height == x and $fsize != x {
+        // 防止被切掉底边, 默认 1.15 倍行高
+        $line-height: $fsize * 1.15;
+    }
     @include set(line-height, $line-height);
     @if $overflow != x {
         $lines: (get($overflow, 1), $line-height);
         @include text-overflow($lines, get($overflow, 2, 100%) get($overflow, 3))
     }
-} 
+}
 
 @mixin label($padding, $color, $radius: x) {
     white-space: nowrap;
