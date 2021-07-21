@@ -1,5 +1,8 @@
 @mixin position($position, $values, $margin: x) {
   $props: (top, right, bottom, left);
+  @if $position == sticky {
+    position: -webkit-sticky;
+  }
   @include set(position, $position);
   @include set-props($props, $values);
   @include set(margin, $margin);
