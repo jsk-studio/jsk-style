@@ -9,10 +9,12 @@
 }
 
 
-@mixin flex($dire, $align: x, $wrap: nowrap) {
+@mixin flex($dire-info, $align: x) {
   display: flex;
   $h-align: get($align, 1, flex-start);
   $v-align: get($align, 2, center);
+  $dire: get($dire-info, 1);
+  $wrap: get($dire-info, 2, nowrap);
 
   @if $align != x and length($align) == 1 {
     $v-align: nth($align, length($align));
@@ -35,7 +37,7 @@
 }
 
 @mixin flow($vals, $space: 0) {
-  @include flex(row, flex-start, wrap);
+  @include flex(row wrap, flex-start);
   height: auto; // flex-wrap 父元素不能有高度
 
   $col: get($vals, 1);

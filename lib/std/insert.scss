@@ -35,29 +35,39 @@
   }
   
   // 主要为了解决渐变色 transition 不支持动画
-  @mixin insert-fill($name) {
-    position: relative;
-    z-index: 1;
-    @include insert($name) {
-        @include position(absolute, 0);
-        z-index: -1;
+  // @mixin insert-fill($name) {
+  //   position: relative;
+  //   z-index: 1;
+  //   @include insert($name) {
+  //       @include position(absolute, 0);
+  //       z-index: -1;
+  //       @content;
+  //   }
+  // }
+  
+  @function get-icon($icon-name) {
+    $icon: get($default-icons, $icon-name);
+    @return get($icon, 1, $icon-name);
+  }
+  
+  @mixin insert-icon($name, $icon-info) {
+    $icon-name: get($icon-info, 1);
+    $icon: get($default-icons, $icon-name);
+    $icon-family: get($icon-info, 2, get($icon, 2));
+    @include insert($name, x, inline-block) {
+        font-family: $icon-family;
+        content: get-icon($icon-name);
         @content;
     }
   }
-  
-  @function get-icon($icon) {
-    $icon-family: get($icon, 1);
-    $icon-name: get($icon, 2);
-    @return get($default-icons, $icon-name, $icon-name);
-  }
-  
-  @mixin insert-icon($name, $icon) {
-    $icon-family: get($icon, 1);
-    $icon-name: get($icon, 2);
-    @include insert($name, x, inline-block) {
-        font-family: $icon-family;
-        content: get-icon($icon);
-        @content;
+
+  @mixin insert-under($name, $pos, $index: 1) {
+    position: relative;
+    z-index: $index;
+    @include insert($name, x) {
+      z-index: -1;
+      @include position(absolute, $pos, auto);
+      @content;
     }
   }
   

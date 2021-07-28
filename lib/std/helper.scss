@@ -36,13 +36,28 @@
   @return $val;
 }
 
-@function get-by($props, $type) {
+@function get-by($props, $type, $count: x) {
+  $mprops: ();
   @each $prop in $props {
-    @if type-of($prop) == $type {
-      @return $prop;
+    $mtype: get($type, 1);
+    @if type-of($prop) == $mtype and ($count == x or $count > length($mprops)) {
+      @if $mtype == 'number' and length($type) == 2 {
+        $unit: get($type, 2);
+        @if $unit == unit($prop) {
+          $mprops: append($mprops, $prop);
+        }
+      } @else {
+        $mprops: append($mprops, $prop);
+      }
     }
   }
-  @return x;
+  @if length($mprops) == 0 {
+    @return x;
+  }
+  @if length($mprops) == 1 or $count == 1 {
+    @return get($mprops, 1);
+  }
+  @return $mprops;
 }
 
 @function has($props, $value) {

@@ -47,15 +47,20 @@
     @include set-font($font);
     @include set-i(text-align, $align, 1);
     $line-height: get($align, 2);
-    $fsize: get-by($font, 'number');
+    $fsize: get-by($font, 'number' 'px');
     @if $line-height == x and $fsize != x {
-        // 防止被切掉底边, 默认 1.15 倍行高
-        $line-height: $fsize * 1.15;
+        @if $line-height == x {
+            // 防止被切掉底边, 默认 1.15 倍行高
+            $line-height: $fsize * 1.15;
+        } @else if type-of($line-height) == 'number' and unit($line-height) == '' {
+            $line-height: $fsize * $line-height;
+        }
     }
     @include set(line-height, $line-height);
     @if $overflow != x {
-        $lines: (get($overflow, 1), $line-height);
-        @include text-overflow($lines, get($overflow, 2, 100%) get($overflow, 3))
+        $lines: get($overflow, 1) $line-height;
+        $t-width: get($overflow, 2, 100%) get($overflow, 3);
+        @include text-overflow($lines, $t-width)
     }
 }
 
